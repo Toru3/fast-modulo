@@ -7,8 +7,8 @@ image: "rust:latest"
 test:nightly:
   script:
     - rustup default nightly
-    - rustup --version #&& rustup component add rustfmt
+    - rustup --version && : rustup component add rustfmt
     - rustc --version && cargo --version
-    - #cargo fmt --all -- --check
+    - : cargo fmt --all -- --check
     - cargo test --all --verbose
     - cargo bench --all --verbose
