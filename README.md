@@ -1,4 +1,4 @@
-# fast-mulmod
+# fast-modulo
 This crate needs nightly. (for `feature(asm)`)
 
 ## benchmark
