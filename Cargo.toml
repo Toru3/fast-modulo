@@ -3,6 +3,13 @@ name = "fast-modulo"
 version = "0.1.0"
 authors = ["Toru3 <ryuutet@gmail.com>"]
 edition = "2018"
+description = "fast modulo calculation"
+license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/fast-modulo/"
+repository = "https://gitlab.com/Toru3/fast-modulo"
+readme = "README.md"
+keywords = ["fast", "modulo"]
+categories = ["hardware-support", "no-std"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
