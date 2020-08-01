@@ -56,7 +56,6 @@ pub fn mulmod_u64(a: u64, mut b: u64, m: u64) -> u64 {
 #[inline]
 /// calcurate `a % m`
 ///
-/// This function doesn't check quotient less than $`2^{64}`$.
 /// ```
 /// use fast_modulo::mod_u128u64;
 /// assert_eq!(mod_u128u64(17, 3), 2);
@@ -78,6 +77,7 @@ pub fn mod_u128u64(a: u128, m: u64) -> u64 {
 #[inline]
 /// calcurate `a % m`
 ///
+/// This function doesn't check quotient less than $`2^{64}`$.
 /// required $`a < 2^{64}m`$
 /// ```
 /// use fast_modulo::mod_u128u64_unchecked;
