@@ -4,10 +4,24 @@
 image: "rust:latest"
 
 # Use cargo to test the project
-test:nightly:
+test:fmt:
   script:
     - rustup default nightly
-    - rustup --version
-    - rustc --version && cargo --version
+    - rustup component add rustfmt
+    - rustup update
+    - rustup --version && rustc --version && cargo --version
+    - cargo fmt --all -- --check
+
+test:test:
+  script:
+    - rustup default nightly
+    - rustup update
+    - rustup --version && rustc --version && cargo --version
     - cargo test --all --verbose
+
+test:bench:
+  script:
+    - rustup default nightly
+    - rustup update
+    - rustup --version && rustc --version && cargo --version
     - cargo bench --all --verbose
