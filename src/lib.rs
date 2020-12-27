@@ -104,10 +104,6 @@ pub fn mod_u128u64_unchecked(a: u128, m: u64) -> u64 {
 mod tests {
     use crate::*;
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-    #[test]
     fn modulo_u64() {
         use rand::prelude::*;
         let mut rng = rand::thread_rng();
