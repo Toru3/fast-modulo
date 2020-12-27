@@ -2,35 +2,27 @@
 This crate needs nightly. (for `feature(asm)`)
 
 ## benchmark
-OS: Ubuntu 18.04, CPU: AMD Ryzen 7 2700X, rustc: 1.47.0-nightly (6c8927b0c 2020-07-26)
+OS: Ubuntu 18.04, CPU: AMD Ryzen 7 2700X, rustc 1.50.0-nightly (bb178237c 2020-12-25)
 ```
-reference::mulmod_u64   time:   [174.98 ns 175.08 ns 175.18 ns]                                   
-                        change: [-0.4957% -0.3893% -0.2838%] (p = 0.00 < 0.05)
+reference::mulmod_u64   time:   [23.242 ns 23.255 ns 23.267 ns]                                   
+                        change: [+0.6678% +0.7357% +0.8097%] (p = 0.00 < 0.05)
                         Change within noise threshold.
-Found 10 outliers among 100 measurements (10.00%)
-  1 (1.00%) low severe
-  5 (5.00%) low mild
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+
+mulmod_u64              time:   [10.262 ns 10.270 ns 10.279 ns]                        
+                        change: [-0.0325% +0.0948% +0.2124%] (p = 0.15 > 0.05)
+                        No change in performance detected.
+Found 7 outliers among 100 measurements (7.00%)
+  2 (2.00%) low mild
   4 (4.00%) high mild
-
-mulmod_u64              time:   [10.355 ns 10.359 ns 10.363 ns]                        
-                        change: [+0.3039% +0.4009% +0.4971%] (p = 0.00 < 0.05)
-                        Change within noise threshold.
-Found 2 outliers among 100 measurements (2.00%)
-  1 (1.00%) high mild
   1 (1.00%) high severe
 
-reference::mod_u128u64  time:   [183.92 ns 184.04 ns 184.17 ns]                                    
-                        change: [+0.2122% +0.3338% +0.4534%] (p = 0.00 < 0.05)
+reference::mod_u128u64  time:   [36.692 ns 36.708 ns 36.724 ns]                                    
+                        change: [-0.9907% -0.9083% -0.8310%] (p = 0.00 < 0.05)
                         Change within noise threshold.
-Found 5 outliers among 100 measurements (5.00%)
-  3 (3.00%) low mild
-  1 (1.00%) high mild
-  1 (1.00%) high severe
 
-mod_u128u64             time:   [14.235 ns 14.242 ns 14.250 ns]                         
-                        change: [+0.2390% +0.3663% +0.4827%] (p = 0.00 < 0.05)
+mod_u128u64             time:   [13.935 ns 13.943 ns 13.951 ns]                         
+                        change: [-1.1197% -1.0431% -0.9694%] (p = 0.00 < 0.05)
                         Change within noise threshold.
-Found 5 outliers among 100 measurements (5.00%)
-  3 (3.00%) low mild
-  2 (2.00%) high
 ```
