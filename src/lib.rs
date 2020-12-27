@@ -47,7 +47,7 @@ pub fn mulmod_u64(a: u64, mut b: u64, m: u64) -> u64 {
             "mul rdx",
             "div {}",
             in(reg) m,
-            in("rax") a,
+            inout("rax") a => _,
             inout("rdx") b,
         );
     }
@@ -93,7 +93,7 @@ pub fn mod_u128u64_unchecked(a: u128, m: u64) -> u64 {
         asm!(
             "div {}",
             in(reg) m,
-            in("rax") lo,
+            inout("rax") lo => _,
             inout("rdx") hi => r,
         );
     }
