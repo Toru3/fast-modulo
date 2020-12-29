@@ -123,6 +123,7 @@ pub fn mod_u128u64_unchecked(a: u128, m: u64) -> u64 {
 #[inline]
 /// calculate $`a ^ p \bmod m`$
 ///
+/// required `a < m`.
 /// ```
 /// use fast_modulo::powmod_u64;
 /// assert_eq!(powmod_u64(2, 10, 13), 10);
