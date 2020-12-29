@@ -30,6 +30,26 @@ pub mod reference {
         let rr = a % mm;
         rr as _
     }
+
+    #[inline]
+    /// calculate $`a ^ p \bmod m`$
+    ///
+    /// ```
+    /// use fast_modulo::reference::powmod_u64;
+    /// assert_eq!(powmod_u64(2, 10, 13), 10);
+    /// assert_eq!(powmod_u64(31, 41, 59), 39);
+    /// ```
+    pub fn powmod_u64(mut a: u64, mut p: u64, m: u64) -> u64 {
+        let mut y = 1;
+        while p > 0 {
+            if p % 2 == 1 {
+                y = mulmod_u64(y, a, m);
+            }
+            a = mulmod_u64(a, a, m);
+            p /= 2;
+        }
+        y
+    }
 }
 
 #[inline]
@@ -100,11 +120,31 @@ pub fn mod_u128u64_unchecked(a: u128, m: u64) -> u64 {
     r
 }
 
+#[inline]
+/// calculate $`a ^ p \bmod m`$
+///
+/// ```
+/// use fast_modulo::powmod_u64;
+/// assert_eq!(powmod_u64(2, 10, 13), 10);
+/// assert_eq!(powmod_u64(31, 41, 59), 39);
+/// ```
+pub fn powmod_u64(mut a: u64, mut p: u64, m: u64) -> u64 {
+    let mut y = 1;
+    while p > 0 {
+        if p % 2 == 1 {
+            y = mulmod_u64(y, a, m);
+        }
+        a = mulmod_u64(a, a, m);
+        p /= 2;
+    }
+    y
+}
+
 #[cfg(test)]
 mod tests {
     use crate::*;
     #[test]
-    fn modulo_u64() {
+    fn modulo_u64_mul() {
         use rand::prelude::*;
         let mut rng = rand::thread_rng();
         for _ in 0..1_000_000 {
@@ -132,6 +172,17 @@ mod tests {
             let m = rng.gen::<u32>().into();
             let a = rng.gen();
             assert_eq!(reference::mod_u128u64(a, m), mod_u128u64(a, m));
+        }
+    }
+    #[test]
+    fn modulo_u64_pow() {
+        use rand::prelude::*;
+        let mut rng = rand::thread_rng();
+        for _ in 0..1_000_000 {
+            let m = rng.gen();
+            let a = rng.gen::<u64>() % m;
+            let p = rng.gen::<u64>();
+            assert_eq!(reference::powmod_u64(a, p, m), powmod_u64(a, p, m));
         }
     }
 }

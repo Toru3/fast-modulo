@@ -36,6 +36,24 @@ fn criterion_benchmark(c: &mut Criterion) {
             )
         })
     });
+    c.bench_function("reference::powmod_u64", |b| {
+        b.iter(|| {
+            reference::powmod_u64(
+                black_box(3141592652589793238),
+                black_box(4626433832795028841),
+                black_box(9716939937510582097),
+            )
+        })
+    });
+    c.bench_function("powmod_u64", |b| {
+        b.iter(|| {
+            powmod_u64(
+                black_box(3141592652589793238),
+                black_box(4626433832795028841),
+                black_box(9716939937510582097),
+            )
+        })
+    });
 }
 
 criterion_group! {
