@@ -52,6 +52,73 @@ pub mod reference {
     }
 }
 
+mod internal {
+    #[inline]
+    #[cfg(target_arch = "x86_64")]
+    pub fn mulmod_u64(a: u64, mut b: u64, m: u64) -> u64 {
+        unsafe {
+            asm!(
+                "mul rdx",
+                "div {}",
+                in(reg) m,
+                inout("rax") a => _,
+                inout("rdx") b,
+            );
+        }
+        b
+    }
+    #[inline]
+    #[cfg(not(target_arch = "x86_64"))]
+    pub fn mulmod_u64(a: u64, b: u64, m: u64) -> u64 {
+        // fallback
+        super::reference::mulmod_u64(a, b, m)
+    }
+
+    #[inline]
+    #[cfg(target_arch = "x86_64")]
+    pub fn mod_u128u64(a: u128, m: u64) -> u64 {
+        let qb = 65 + m.leading_zeros() - a.leading_zeros();
+        if qb > 64 {
+            let s = qb - 64;
+            let mask = (1 << s) - 1;
+            let r = mod_u128u64_unchecked(a >> s, m) as u128;
+            let na = (r << s) + (a & mask);
+            mod_u128u64_unchecked(na, m)
+        } else {
+            mod_u128u64_unchecked(a, m)
+        }
+    }
+    #[inline]
+    #[cfg(not(target_arch = "x86_64"))]
+    pub fn mod_u128u64(a: u128, m: u64) -> u64 {
+        // fallback
+        super::reference::mod_u128u64(a, m)
+    }
+
+    #[inline]
+    #[cfg(target_arch = "x86_64")]
+    pub fn mod_u128u64_unchecked(a: u128, m: u64) -> u64 {
+        let hi = (a >> 64) as u64;
+        let lo = (a & 0xFFFFFFFFFFFFFFFF) as u64;
+        let r;
+        unsafe {
+            asm!(
+                "div {}",
+                in(reg) m,
+                inout("rax") lo => _,
+                inout("rdx") hi => r,
+            );
+        }
+        r
+    }
+    #[inline]
+    #[cfg(not(target_arch = "x86_64"))]
+    pub fn mod_u128u64_unchecked(a: u128, m: u64) -> u64 {
+        // fallback
+        super::reference::mod_u128u64(a, m)
+    }
+}
+
 #[inline]
 /// calculate `a * b % m`
 ///
@@ -61,17 +128,8 @@ pub mod reference {
 /// assert_eq!(mulmod_u64(3, 4, 5), 2);
 /// assert_eq!(mulmod_u64((1 << 63) - 1, (1 << 63) - 3, (1 << 63) + 1), 8);
 /// ```
-pub fn mulmod_u64(a: u64, mut b: u64, m: u64) -> u64 {
-    unsafe {
-        asm!(
-            "mul rdx",
-            "div {}",
-            in(reg) m,
-            inout("rax") a => _,
-            inout("rdx") b,
-        );
-    }
-    b
+pub fn mulmod_u64(a: u64, b: u64, m: u64) -> u64 {
+    internal::mulmod_u64(a, b, m)
 }
 
 #[inline]
@@ -83,16 +141,7 @@ pub fn mulmod_u64(a: u64, mut b: u64, m: u64) -> u64 {
 /// assert_eq!(mod_u128u64((1 << 127) - 1, (1 << 61) - 1), 31);
 /// ```
 pub fn mod_u128u64(a: u128, m: u64) -> u64 {
-    let qb = 65 + m.leading_zeros() - a.leading_zeros();
-    if qb > 64 {
-        let s = qb - 64;
-        let mask = (1 << s) - 1;
-        let r = mod_u128u64_unchecked(a >> s, m) as u128;
-        let na = (r << s) + (a & mask);
-        mod_u128u64_unchecked(na, m)
-    } else {
-        mod_u128u64_unchecked(a, m)
-    }
+    internal::mod_u128u64(a, m)
 }
 
 #[inline]
@@ -106,18 +155,7 @@ pub fn mod_u128u64(a: u128, m: u64) -> u64 {
 /// assert_eq!(mod_u128u64_unchecked((1 << 107) - 1, (1 << 61) - 1), 70368744177663);
 /// ```
 pub fn mod_u128u64_unchecked(a: u128, m: u64) -> u64 {
-    let hi = (a >> 64) as u64;
-    let lo = (a & 0xFFFFFFFFFFFFFFFF) as u64;
-    let r;
-    unsafe {
-        asm!(
-            "div {}",
-            in(reg) m,
-            inout("rax") lo => _,
-            inout("rdx") hi => r,
-        );
-    }
-    r
+    internal::mod_u128u64_unchecked(a, m)
 }
 
 #[inline]
