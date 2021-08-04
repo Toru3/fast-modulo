@@ -26,3 +26,6 @@ powmod_u64              time:   [916.39 ns 917.03 ns 917.77 ns]
 Found 2 outliers among 100 measurements (2.00%)
   2 (2.00%) high mild
 ```
+
+# Licence
+AGPL-3.0-or-later
