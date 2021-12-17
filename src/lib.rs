@@ -1,5 +1,5 @@
 #![no_std]
-#![feature(asm)]
+
 pub mod reference {
     #[inline]
     /// calculate `a * b % m`
@@ -53,6 +53,7 @@ pub mod reference {
 }
 
 mod internal {
+    use core::arch::asm;
     #[inline]
     #[cfg(target_arch = "x86_64")]
     pub fn mulmod_u64(a: u64, mut b: u64, m: u64) -> u64 {

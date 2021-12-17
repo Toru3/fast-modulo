@@ -1,5 +1,5 @@
 # fast-modulo
-This crate needs nightly. (for `feature(asm)`)
+This crate needs nightly-2021-12-15 or later. (for `asm!`)
 
 ## benchmark
 OS: Ubuntu 18.04, CPU: AMD Ryzen 7 2700X, rustc 1.51.0-nightly (257becbfe 2020-12-27)
