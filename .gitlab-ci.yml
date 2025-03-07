@@ -2,7 +2,7 @@ image: "rust:latest"
 
 test:check:
   script:
-    - rustup toolchain install nightly --component rustfmt clippy
+    - rustup toolchain install nightly --component rustfmt --component clippy
     - rustup --version && rustc --version && cargo --version
     - cargo fmt --all -- --check
     - cargo clippy --workspace --all-targets --all-features --verbose -- -D warnings
